@@ -127,74 +127,108 @@ import SwiftUI
 //      }
 //  }
 
-    /// New Menu Item
-    struct ContentView: View {
-        @State private var selection = Set<Int>()
-        var body: some View {
-            List(0..<4, selection: $selection) { num in
-                // Text("Row \(num)")
-                DetailView(num: num)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity) .onCommand(#selector(Commands.showSelection)) {
-                print("Selection: \(self.selection)")
-            }
-        }
-    }
-
-    class Commands {
-        @IBAction func showSelection(_ sender: Any) { }
-    }
-
-    struct DetailView: View {
-        var num: Int
-        var body: some View {
-            Text("DetailView " + "\(num)")
-       }
-    }
+//    /// New Menu Item
+//    struct ContentView: View {
+//        @State private var selection = Set<Int>()
+//        var body: some View {
+//            List(0..<4, selection: $selection) { num in
+//                // Text("Row \(num)")
+//                DetailView(num: num)
+//            }
+//            .frame(maxWidth: .infinity, maxHeight: .infinity)
+//            .onCommand(#selector(Commands.showSelection)) {
+//                print("Selection: \(self.selection)")
+//            }
+//        }
+//    }
+//
+//    class Commands {
+//        @IBAction func showSelection(_ sender: Any) { }
+//    }
+//
+//    struct DetailView: View {
+//        var num: Int
+//        var body: some View {
+//            Text("DetailView " + "\(num)")
+//       }
+//    }
 
 /// Vise flere vinduer
-//class DetailWindowController<RootView: View>: NSWindowController {
-//    convenience init(rootView: RootView) {
-//        let hostingController = NSHostingController(rootView:
-//            rootView.frame(width: 300, height: 400))
-//        let window = NSWindow(contentViewController:
-//            hostingController)
-//        window.setContentSize(NSSize(width: 300, height: 400))
-//        self.init(window: window)
+class DetailWindowController<RootView: View>: NSWindowController {
+    convenience init(rootView: RootView) {
+        let hostingController = NSHostingController(rootView:
+            rootView.frame(width: 800, height: 500))
+        let window = NSWindow(contentViewController:
+            hostingController)
+        window.setContentSize(NSSize(width: 800, height: 500))
+        self.init(window: window)
+    }
+}
+
+struct DetailView: View {
+    var body: some View {
+        Text("Second View")
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+struct ContentView: View {
+    @State private var vindowCounter = 0
+    var body: some View {
+        Button(vindowCounter == 0 ? "Show New Window" : "Cannot show a new vindoq") {
+            if self.vindowCounter == 0 {
+                self.vindowCounter += 1
+                let controller = DetailWindowController(rootView:
+                    DetailView())
+                controller.window?.title = "New window"
+                controller.showWindow(nil)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+/// Starter et annet vindu:  (DetailView()) og dette vinduet kan avsluttes
+//struct ContentView: View {
+//    @State private var showPersonsOverView = false
+//    var body: some View {
+//        VStack {
+//            Spacer()
+//            Button(action: {
+//                self.showPersonsOverView.toggle()
+//            }, label: {
+//                HStack {
+//                    Text("Start DetailView")
+//                }
+//            })
+//        }
+//        .sheet(isPresented: $showPersonsOverView) {
+//            DetailView()
+//        }
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
 //    }
 //}
 //
 //struct DetailView: View {
+//    @Environment(\.presentationMode) var presentationMode
 //    var body: some View {
-//        Text("Second View")
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//    }
-//}
-//
-//struct ContentView: View {
-//    var body: some View {
-//        Button("Show New Window") {
-//            let controller = DetailWindowController(rootView:
-//                DetailView())
-//            controller.window?.title = "New window"
-//            controller.showWindow(nil)
+//        VStack {
+//            Text("DetailView")
+//                .padding()
+//            Button(action: {
+//                self.presentationMode.wrappedValue.dismiss()
+//            }, label: {
+//                Text("Exit")
+//                    .padding(.leading, 5)
+//                    .padding(.trailing, 5)
+//                    .background(Color.gray)
+//                    .frame(width: 80, height: 80, alignment: .center)
+//            })
+//                .buttonStyle(PlainButtonStyle()) // DefaultButtonStyle() PlainButtonStyle() BorderlessButtonStyle()
 //        }
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
 //    }
 //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
